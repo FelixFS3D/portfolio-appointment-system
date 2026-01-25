@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class AvailabiltySlot {
+public class AvailabilitySlot {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

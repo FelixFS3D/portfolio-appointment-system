@@ -18,5 +18,5 @@ public class Appointment {
 
     @OneToOne
     @JoinColumn(name = "slot_id")
-    private AvailabiltySlot slot;
+    private AvailabilitySlot slot;
 }
