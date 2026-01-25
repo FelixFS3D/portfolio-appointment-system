@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class SlotDTO {
     private Long id;
-    private LocalDateTime starTime;
+    private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Boolean isBooked;
 
