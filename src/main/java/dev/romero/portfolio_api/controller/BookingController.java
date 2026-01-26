@@ -4,6 +4,7 @@ import dev.romero.portfolio_api.DTO.AppointmentRequest;
 import dev.romero.portfolio_api.DTO.SlotDTO;
 import dev.romero.portfolio_api.model.AvailabilitySlot;
 import dev.romero.portfolio_api.service.BookingService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class BookingController {
 
     // Reservar un slot específico
     @PostMapping("/{id}/book")
-    public ResponseEntity<String> bookSlot(@PathVariable Long id, @RequestBody AppointmentRequest request) {
+    public ResponseEntity<String> bookSlot(@PathVariable Long id, @Valid @RequestBody AppointmentRequest request) {
         try {
             bookingService.createAppointment(id, request);
             return ResponseEntity.ok("Reserva exitosa. Se ha enviado un correo de confirmación.");

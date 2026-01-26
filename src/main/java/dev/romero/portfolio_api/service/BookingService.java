@@ -40,7 +40,7 @@ public class BookingService {
 
         Appointment appt = new Appointment();
         appt.setInterviewerName(request.getName());
-        appt.setInterviewerEmail(request.getName());
+        appt.setInterviewerEmail(request.getEmail());
         appt.setSlot(slot);
         appt.setZoomLink(MY_ZOOM_LINK);
         apptRepo.save(appt);
@@ -63,11 +63,13 @@ public class BookingService {
         LocalDateTime limit = date.atTime(endHour, 0);
 
         while (current.isBefore(limit)) {
-            AvailabilitySlot slot = new AvailabilitySlot();
-            slot.setStartTime(current);
-            slot.setEndTime(current.plusMinutes(60));
-            slot.setIsBooked(false);
-            slotRepo.save(slot);
+            if (!slotRepo.existsByStartTime(current)) {
+                AvailabilitySlot slot = new AvailabilitySlot();
+                slot.setStartTime(current);
+                slot.setEndTime(current.plusMinutes(60));
+                slot.setIsBooked(false);
+                slotRepo.save(slot);
+            }
 
             current = current.plusMinutes(60);
         }
