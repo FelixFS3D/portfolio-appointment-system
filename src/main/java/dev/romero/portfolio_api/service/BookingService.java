@@ -83,5 +83,14 @@ public class BookingService {
     public List<AvailabilitySlot> getAllSlots() {
         return slotRepo.findAll();
     }
+    public List<AvailabilitySlot> getSlotsInDateRange(LocalDate fromDate, LocalDate toDate) {
+
+        ZoneId zone = ZoneId.of("Europe/Madrid");
+
+        ZonedDateTime start = fromDate.atStartOfDay(zone);
+        ZonedDateTime end = toDate.plusDays(1).atStartOfDay(zone);
+
+        return slotRepo.findByStartTimeBetweenOrderByStartTimeAsc(start, end);
+    }
 }
 

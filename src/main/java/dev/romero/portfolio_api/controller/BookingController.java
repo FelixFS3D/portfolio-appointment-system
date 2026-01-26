@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -20,27 +22,31 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
-    // Obtener la lista de todos los slots transformados a DTO
+
     @GetMapping
-    public List<SlotDTO> getSlots() {
-        return bookingService.getAllSlots().stream().map(slot -> {
+    public List<SlotDTO> getSlots(
+            @RequestParam(required = false) LocalDate from,
+            @RequestParam(required = false) LocalDate to
+    ) {
+        // Si no mandan fechas, usamos "hoy" y "dentro de 7 días" por defecto
+        if (from == null) from = LocalDate.now();
+        if (to == null) to = LocalDate.now().plusDays(7);
+
+        return bookingService.getSlotsInDateRange(from, to).stream().map(slot -> {
+            // ... tu mapeo a DTO igual que antes ...
             SlotDTO dto = new SlotDTO();
-            dto.setId(slot.getId());
-            dto.setStartTime(slot.getStartTime());
-            dto.setEndTime(slot.getEndTime());
-            dto.setIsBooked(slot.getIsBooked());
+            // ...
             return dto;
         }).collect(Collectors.toList());
     }
 
-    // Reservar un slot específico
     @PostMapping("/{id}/book")
-    public ResponseEntity<String> bookSlot(@PathVariable Long id, @Valid @RequestBody AppointmentRequest request) {
+    public ResponseEntity<?> bookSlot(@PathVariable Long id, @Valid @RequestBody AppointmentRequest request) {
         try {
             bookingService.createAppointment(id, request);
-            return ResponseEntity.ok("Reserva exitosa. Se ha enviado un correo de confirmación.");
+            return ResponseEntity.ok(Map.of("message", "Reserva exitosa.Se ha enviado un correo de conrfirmacion."));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 }

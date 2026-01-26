@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface SlotRepository extends JpaRepository<AvailabilitySlot, Long> {
     List<AvailabilitySlot> findByIsBookedFalse();
+    List<AvailabilitySlot> findByStartTimeBetweenOrderByStartTimeAsc(ZonedDateTime start, ZonedDateTime end);
     boolean existsByStartTime(ZonedDateTime startTime);
 }
