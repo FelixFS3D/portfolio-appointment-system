@@ -4,7 +4,7 @@ package dev.romero.portfolio_api.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 @Entity
 @Data
@@ -15,10 +15,10 @@ public class AvailabilitySlot {
     private Long id;
 
     @Column(nullable = false)
-    private LocalDateTime startTime;
+    private ZonedDateTime startTime;
 
     @Column(nullable = false)
-    private LocalDateTime endTime;
+    private ZonedDateTime endTime;
 
     private Boolean isBooked = false;
 

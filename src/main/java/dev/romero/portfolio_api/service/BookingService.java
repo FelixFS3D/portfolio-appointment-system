@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,13 +56,16 @@ public class BookingService {
     }
 
     public void generateDailySlots(LocalDate date) {
-        createSlotsInRange(date, 7, 13);
-        createSlotsInRange(date, 15, 18);
+
+        ZoneId myZone = ZoneId.of("Europe/Madrid");
+
+        createSlotsInRange(date, 7, 13, myZone);
+        createSlotsInRange(date, 15, 18, myZone);
     }
 
-    private void createSlotsInRange(LocalDate date, int startHour, int endHour) {
-        LocalDateTime current = date.atTime(startHour, 0);
-        LocalDateTime limit = date.atTime(endHour, 0);
+    private void createSlotsInRange(LocalDate date, int startHour, int endHour, ZoneId zone) {
+        ZonedDateTime current = date.atStartOfDay(zone).withHour(startHour);
+        ZonedDateTime limit = date.atStartOfDay(zone).withHour(endHour);
 
         while (current.isBefore(limit)) {
             if (!slotRepo.existsByStartTime(current)) {

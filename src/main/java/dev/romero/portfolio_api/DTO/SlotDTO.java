@@ -2,13 +2,14 @@ package dev.romero.portfolio_api.DTO;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
+
+import java.time.ZonedDateTime;
 
 @Data
 public class SlotDTO {
     private Long id;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    private ZonedDateTime startTime;
+    private ZonedDateTime endTime;
     private Boolean isBooked;
 
 }
