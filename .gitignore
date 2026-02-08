@@ -34,3 +34,4 @@ build/
 
 ### Personal credentials ###
 src/main/resources/application.properties
+.env
